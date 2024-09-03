@@ -5,3 +5,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function loadPage(url) {
+    event.preventDefault(); // previne o comportamento padrão do link
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro ao carregar a página: ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('content').innerHTML = data;
+            history.pushState(null, '', url);
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('content').innerHTML = '';
+        });
+}
